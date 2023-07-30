@@ -1,6 +1,15 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/users");
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json({ users });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -42,4 +51,4 @@ const currentUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, currentUser };
+module.exports = { getAllUsers, registerUser, loginUser, currentUser };

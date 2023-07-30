@@ -1,70 +1,109 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Register = ({ setRegisteredName, setRegisteredEmail }) => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [nameErr, setNameErr] = useState(false);
   const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState(false);
+  const [emailPresent, setEmailPresent] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState(false);
 
   const handleUserRegisteration = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
-      console.log("All fields are mandatory");
+    if (!name) {
+      setNameErr(true);
+      return;
+    }
+    if (!email) {
+      setEmailErr(true);
+      return;
+    }
+    if (!password) {
+      setPasswordErr(true);
       return;
     }
     // if email already exists
-    /*
-    const emailFound = await fetch(
-      `http://localhost:5000/api/users/register?email=${new URLSearchParams(
-        email
-      ).toString()}`
-    );
-    console.log(emailFound);
-    if (!emailFound.ok) {
-      console.log("Email already exists");
+    const url = `http://localhost:5000/api/users/register`;
+    const res = await fetch(url);
+    const { users } = await res.json();
+    let present = false;
+    users.forEach((user) => (user.email === email ? (present = true) : null));
+    if (present) {
+      setEmailPresent(true);
       return;
     }
-    */
-    const response = await axios.post(
-      "http://localhost:5000/api/users/register",
-      {
-        username: name,
-        email,
-        password,
-      }
-    );
-    console.log(response.data);
+    // create new user in db
+    await axios.post(url, {
+      username: name,
+      email,
+      password,
+    });
     setName("");
     setEmail("");
     setPassword("");
+    setRegisteredName(name);
+    setRegisteredEmail(email);
+    navigate("/current");
   };
 
   return (
-    <div>
+    <div className="register">
       <h1>Register Here!!!</h1>
-      <form method="post">
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleUserRegisteration}>Register</button>
+      <form method="post" className="register-form">
+        <div className="register-entries">
+          <p>Name: </p>
+          {nameErr && <p>Enter your Name please</p>}
+          <input
+            className="register-input-field"
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setNameErr(false);
+            }}
+          />
+        </div>
+        <div className="register-entries">
+          <p>Email: </p>
+          {emailErr && <p>Enter your EmailId please</p>}
+          {emailPresent && <p>Entered email is already present.</p>}
+          <input
+            className="register-input-field"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailErr(false);
+              setEmailPresent(false);
+            }}
+          />
+        </div>
+        <div className="register-entries">
+          <p>Password: </p>
+          {passwordErr && <p>Enter Password please</p>}
+          <input
+            className="register-input-field"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordErr(false);
+            }}
+          />
+        </div>
+        <button className="register-button" onClick={handleUserRegisteration}>
+          Register
+        </button>
       </form>
       <p>
-        Already have an account? <a href="/login">Login</a>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
   );
