@@ -21,7 +21,15 @@ const App = () => {
             />
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              setRegisteredEmail={setRegisteredEmail}
+              setRegisteredName={setRegisteredName}
+            />
+          }
+        />
         <Route
           path="/current"
           element={

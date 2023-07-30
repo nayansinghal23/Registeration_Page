@@ -47,7 +47,7 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
     setPassword("");
     setRegisteredName(name);
     setRegisteredEmail(email);
-    navigate("/current");
+    navigate("/login");
   };
 
   return (

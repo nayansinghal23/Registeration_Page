@@ -4,7 +4,8 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.register {
+.register,
+.login {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -12,7 +13,8 @@
   align-items: center;
 }
 
-.register-form {
+.register-form,
+.login-form {
   height: 60%;
   width: 60%;
   border: 1px solid black;
@@ -23,7 +25,8 @@
   align-items: center;
 }
 
-.register-entries {
+.register-entries,
+.login-entries {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -31,7 +34,8 @@
   align-items: center;
 }
 
-.register-input-field {
+.register-input-field,
+.login-input-field {
   border: 1px solid black;
   border-radius: 10px;
   width: 300px;
@@ -45,7 +49,8 @@ input::placeholder {
   color: red;
 }
 
-.register-button {
+.register-button,
+.login-button {
   width: 300px;
   height: 30px;
   background-color: black;
@@ -54,7 +59,8 @@ input::placeholder {
   color: white;
 }
 
-.register-button:hover {
+.register-button:hover,
+.login-button:hover {
   cursor: pointer;
   background-color: aqua;
   color: black;
@@ -69,7 +75,8 @@ input::placeholder {
 }
 
 @media screen and (max-width: 600px) {
-  .register-form {
+  .register-form,
+  .login-form {
     height: 80%;
     width: 100%;
   }

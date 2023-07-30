@@ -34,8 +34,27 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("All fields are mandatory");
+  }
   try {
-    res.status(200).json({ message: "User Logged In" });
+    const findUserInDatabase = await User.findOne({ email: email });
+    if (!findUserInDatabase) {
+      res.status(404);
+      throw new Error("User not found. Register first");
+    }
+    const passwordMatched = await bcrypt.compare(
+      password,
+      findUserInDatabase.password
+    );
+    if (!passwordMatched) {
+      return res.status(404).send("Incorrect Password");
+    }
+    res
+      .status(200)
+      .json({ message: "User Logged In", user: findUserInDatabase });
   } catch (error) {
     res.status(500);
     throw new Error(error.message);
