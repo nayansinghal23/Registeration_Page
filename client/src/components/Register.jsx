@@ -34,7 +34,7 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
       return;
     }
     // if email already exists
-    const url = `http://localhost:5000/api/users/register`;
+    const url = `https://authentication-backend-mjyp.onrender.com/api/users/register`;
     const res = await fetch(url);
     const { users } = await res.json();
     let present = false;

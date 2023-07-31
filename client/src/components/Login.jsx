@@ -22,7 +22,8 @@ const Login = ({ setRegisteredEmail, setRegisteredName }) => {
       return;
     }
     // check if email exists in db
-    const url = "http://localhost:5000/api/users/register";
+    const url =
+      "https://authentication-backend-mjyp.onrender.com/api/users/register";
     const response = await fetch(url);
     const { users } = await response.json();
     let present = false,
@@ -40,10 +41,13 @@ const Login = ({ setRegisteredEmail, setRegisteredName }) => {
     }
     // check if password is correct or not
     await axios
-      .post("http://localhost:5000/api/users/login", {
-        email,
-        password,
-      })
+      .post(
+        "https://authentication-backend-mjyp.onrender.com/api/users/login",
+        {
+          email,
+          password,
+        }
+      )
       .then((data) => {
         setRegisteredName(username);
         setRegisteredEmail(email);

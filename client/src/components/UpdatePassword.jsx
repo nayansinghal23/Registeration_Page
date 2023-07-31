@@ -27,7 +27,8 @@ const UpdatePassword = () => {
       return;
     }
     // check if email exists in db
-    const url = "http://localhost:5000/api/users/register";
+    const url =
+      "https://authentication-backend-mjyp.onrender.com/api/users/register";
     const emailFound = await fetch(url);
     const { users } = await emailFound.json();
     let present = false;
@@ -47,10 +48,13 @@ const UpdatePassword = () => {
       return;
     }
     // update password
-    await axios.patch("http://localhost:5000/api/users/login", {
-      email,
-      password,
-    });
+    await axios.patch(
+      "https://authentication-backend-mjyp.onrender.com/api/users/login",
+      {
+        email,
+        password,
+      }
+    );
     navigate("/login");
   };
   return (
