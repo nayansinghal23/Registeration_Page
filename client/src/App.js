@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Current from "./components/Current";
 import { Routes, Route } from "react-router-dom";
+import UpdatePassword from "./components/UpdatePassword";
 
 const App = () => {
   const [registeredName, setRegisteredName] = useState("");
@@ -39,6 +40,7 @@ const App = () => {
             />
           }
         />
+        <Route path="/update" element={<UpdatePassword />} />
       </Routes>
     </div>
   );

@@ -61,6 +61,31 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updatePassword = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(404).json({ message: "Enter all fields" });
+  }
+  try {
+    const emailFound = await User.findOne({ email: email });
+    if (!emailFound) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      {
+        password: hashedPassword,
+      },
+      { new: true }
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+};
+
 const currentUser = async (req, res) => {
   try {
     res.status(200).json({ message: "User Current" });
@@ -70,4 +95,10 @@ const currentUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, registerUser, loginUser, currentUser };
+module.exports = {
+  getAllUsers,
+  registerUser,
+  loginUser,
+  currentUser,
+  updatePassword,
+};

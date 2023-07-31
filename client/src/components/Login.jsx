@@ -96,6 +96,9 @@ const Login = ({ setRegisteredEmail, setRegisteredName }) => {
         </button>
       </form>
       <p>
+        Forgot your Password? <Link to="/update">ForgotPassword</Link>
+      </p>
+      <p>
         Don't have an account? <Link to="/">Register</Link>
       </p>
     </div>
