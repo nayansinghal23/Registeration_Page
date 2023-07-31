@@ -11,6 +11,9 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
   const [emailPresent, setEmailPresent] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordErr, setConfirmPasswordErr] = useState(false);
+  const [match, setMatch] = useState(true);
 
   const handleUserRegisteration = async (e) => {
     e.preventDefault();
@@ -26,6 +29,10 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
       setPasswordErr(true);
       return;
     }
+    if (!confirmPassword) {
+      setConfirmPasswordErr(true);
+      return;
+    }
     // if email already exists
     const url = `http://localhost:5000/api/users/register`;
     const res = await fetch(url);
@@ -34,6 +41,11 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
     users.forEach((user) => (user.email === email ? (present = true) : null));
     if (present) {
       setEmailPresent(true);
+      return;
+    }
+    // confirm password and password should match
+    if (confirmPassword !== password) {
+      setMatch(false);
       return;
     }
     // create new user in db
@@ -45,6 +57,7 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
     setName("");
     setEmail("");
     setPassword("");
+    setConfirmPassword("");
     setRegisteredName(name);
     setRegisteredEmail(email);
     navigate("/login");
@@ -95,6 +108,22 @@ const Register = ({ setRegisteredName, setRegisteredEmail }) => {
             onChange={(e) => {
               setPassword(e.target.value);
               setPasswordErr(false);
+            }}
+          />
+        </div>
+        <div className="register-entries">
+          <p>Confirm Password: </p>
+          {confirmPasswordErr && <p>Confirm your Password please</p>}
+          {!match && <p>Password doesn't matches with confirm password.</p>}
+          <input
+            className="register-input-field"
+            type="password"
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setConfirmPasswordErr(false);
+              setMatch(true);
             }}
           />
         </div>
